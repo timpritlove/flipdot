@@ -42,4 +42,6 @@ npm-debug.log
 .DS_Store
 .tool-versions
 .flipdotrc
-flipdot
+
+# Ignore the flipdot escript binary, but not other flipdot-related files
+/flipdot
