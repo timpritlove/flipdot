@@ -14,7 +14,12 @@ defmodule Flipdot.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      escript: [
+        main_module: Flipdot.CLI,
+        comment: "Flipdot Display Controller"
+      ],
+      default_task: "escript.build"
     ]
   end
 
@@ -24,7 +29,8 @@ defmodule Flipdot.MixProject do
   def application do
     [
       mod: {Flipdot.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools, :os_mon],
+      auto_start: false
     ]
   end
 
@@ -79,7 +85,12 @@ defmodule Flipdot.MixProject do
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      default: [
+        "deps.get",
+        "compile --no-start",
+        "escript.build"
+      ]
     ]
   end
 end
